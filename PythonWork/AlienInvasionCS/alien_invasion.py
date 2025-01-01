@@ -3,6 +3,7 @@ import pygame
 
 from settings import Settings
 from ship import Ship
+from bullet import Bullet
 
 class AlienInvasion:
     '''This is a line comment'''
@@ -17,6 +18,7 @@ class AlienInvasion:
         pygame.display.set_caption("Alien Invasion")
 
         self.ship = Ship(self)
+        self.bullets = pygame.sprite.Group()
 
         # Set the background colour.
         self.bg_color = (230, 230, 230)
@@ -26,6 +28,7 @@ class AlienInvasion:
         while True:
             self._check_events()
             self.ship.update()
+            self.bullets.update()
             self._update_screen()
             self.clock.tick(60)
 
@@ -43,6 +46,8 @@ class AlienInvasion:
                 elif event.key == pygame.K_LEFT:
                     #self.ship.rect.x -= 1
                     self.ship.moving_left = True
+                elif event.key == pygame.K_SPACE:
+                    self._fire_bullet()
 
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT:
@@ -50,12 +55,19 @@ class AlienInvasion:
                 elif event.key == pygame.K_RIGHT:
                     self.ship.moving_right = False
 
+    def _fire_bullet(self):
+        '''Create a new bullet and add it to the bullets group.'''
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
+
 
     def _update_screen(self):
         '''update images on screen and flip to the new screen'''
         # Redraw the screen during each pass through the loop.
         #self.screen.fill(self.bg_color)
         self.screen.fill(self.settings.bg_color)
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
         self.ship.blitme()
 
         # Make the most recently drawn screen visible.
