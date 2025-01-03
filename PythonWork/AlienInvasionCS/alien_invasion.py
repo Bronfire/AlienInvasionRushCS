@@ -57,21 +57,30 @@ class AlienInvasion:
             if event.type == pygame.QUIT:
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
-                    # Move the ship to the right.
-                    self.ship.moving_right = True
-                    #self.ship.rect.x += 1
-                elif event.key == pygame.K_LEFT:
-                    #self.ship.rect.x -= 1
-                    self.ship.moving_left = True
-                elif event.key == pygame.K_SPACE:
-                    self._fire_bullet()
+                self._check_keydown_events(event)
 
             elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT:
-                    self.ship.moving_left = False
-                elif event.key == pygame.K_RIGHT:
-                    self.ship.moving_right = False
+                self._check_keyup_events(event)
+
+
+    def _check_keydown_events(self, event):
+        '''Respond to keypresses.'''
+        if event.key == pygame.K_RIGHT:
+            # Move the ship to the right.
+            self.ship.moving_right = True
+            #self.ship.rect.x += 1
+        elif event.key == pygame.K_LEFT:
+            #self.ship.rect.x -= 1
+            self.ship.moving_left = True
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
+
+    def _check_keyup_events(self, event):
+        '''Respond to key releases.'''
+        if event.key == pygame.K_LEFT:
+            self.ship.moving_left = False
+        elif event.key == pygame.K_RIGHT:
+            self.ship.moving_right = False
 
     def _fire_bullet(self):
         '''Create a new bullet and add it to the bullets group.'''
