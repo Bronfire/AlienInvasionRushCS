@@ -24,7 +24,7 @@ while True:
     if n == 5:
         break
 
-    
+
 
         
 print("end of program")
