@@ -18,7 +18,7 @@ class AlienInvasion:
         #self.screen = pygame.display.set_mode((1800,800)) # change this later, this is my default windowed mode
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         self.settings.screen_width = self.screen.get_rect().width
-        self.settings.screen_height = self.screen.get_rect().height
+        self.settings.screen_height = self.screen.get_rect().height 
         pygame.display.set_caption("Alien Invasion")
 
         self.ship = Ship(self)
@@ -33,8 +33,30 @@ class AlienInvasion:
     def _create_fleet(self):
         '''Create the fleet of aliens.'''
         # Make an alien.
+        # Create aliens and keep adding aliens until there's no room left
+        # Spacing between aliens is one alien width
         alien = Alien(self)
-        self.aliens.add(alien)
+        alien_width, alien_height = alien.rect.size
+        #self.aliens.add(alien)
+
+        current_x, current_y = alien_width, alien_height
+        while current_y < (self.settings.screen_height - 3 * alien_height):
+            while current_x < (self.settings.screen_width - 2 * alien_width): 
+                self._create_alien(current_x, current_y)
+                current_x += 2 * alien_width
+
+            # Finished a row; reset x value, and increment y value.
+            current_x = alien_width
+            current_y += 2 * alien_height
+
+    def _create_alien(self, x_position, y_position):
+        '''create an alien and place it in a fleet.'''
+        new_alien = Alien(self)
+        new_alien.x = x_position
+        new_alien.rect.x = x_position
+        new_alien.rect.y = y_position
+        self.aliens.add(new_alien)
+        #current_x += 2 * alien_width
 
     def run_game(self):
         '''Start the main loop for the game.'''
