@@ -70,7 +70,8 @@ class AlienInvasion:
             self.clock.tick(60)
 
     def _update_aliens(self):
-        '''Update the positions of all aliens in the fleet.'''
+        '''Update the positions of all aliens in the fleet, check if fleet is at edge, update positions.'''
+        self._check_fleet_edges()
         self.aliens.update()
 
     def _update_bullets(self):
@@ -133,6 +134,19 @@ class AlienInvasion:
 
         # Make the most recently drawn screen visible.
         pygame.display.flip()
+
+    def _check_fleet_edges(self):
+        '''Respond appriopriately if any aliens have reached an edge.'''
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+    
+    def _change_fleet_direction(self):
+        ''' Drop the entire fleet and change the fleet's direction.'''
+        for alien in self.aliens.sprites():
+            alien.rect.y += self.settings.fleet_drop_speed
+        self.settings.fleet_direction *= -1
 
 
 if __name__ == '__main__':
