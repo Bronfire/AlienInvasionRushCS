@@ -84,6 +84,12 @@ class AlienInvasion:
         # Check for any bullets that hit aliens, if so get rid of butt and alien.
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
+        if not self.aliens:
+            # Destroy existing bullets and create new fleet.
+            self.bullets.empty()
+            self._create_fleet()
+
+
     def _check_events(self):
         '''respond to keypresses and mouse events'''
         # Watch for the keyboard and mouse events.
