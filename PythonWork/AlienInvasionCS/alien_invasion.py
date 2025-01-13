@@ -20,7 +20,7 @@ class AlienInvasion:
         self.settings = Settings()
 
         #self.screen = pygame.display.set_mode((1800,800)) # change this later, this is my default windowed mode
-        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN)
         self.settings.screen_width = self.screen.get_rect().width
         self.settings.screen_height = self.screen.get_rect().height 
         pygame.display.set_caption("Alien Invasion")
@@ -155,6 +155,24 @@ class AlienInvasion:
 
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                self._check_play_button(mouse_pos)
+
+    def _check_play_button(self, mouse_pos):
+        '''Start a new game when Player clicks play.'''
+        if self.play_button.rect.collidepoint(mouse_pos):
+            # Reset the game statistics
+            self.stats.reset_stats()
+            self.game_active = True
+
+            # Get rid of any remaining bullets and aliens.
+            self.bullets.empty()
+            self.aliens.empty()
+
+            # Create a new fleet and center the ship.
+            self._create_fleet()
+            self.ship.center_ship()
 
 
     def _check_keydown_events(self, event):
